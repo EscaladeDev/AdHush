@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ad Mute — Pay‑What‑You‑Want Support</title>
+  <meta name="description" content="Ad Mute mutes loud ads automatically. Support the project with pay‑what‑you‑want. Privacy‑first and lightweight.">
+  <style>
+    @media (prefers-color-scheme: dark) { :root { color-scheme: dark; } }
+    :root{ --bg:#0b0c10; --surface:#0f1116; --glass:rgba(255,255,255,.04);
+      --text:#eef2f6; --muted:#a6adbb; --border:rgba(255,255,255,.12);
+      --accent:#7aa8ff; --accent-2:#a87bff; --ring:#4f46e5;
+      --shadow:0 10px 30px rgba(0,0,0,.35); --radius:18px; --navH:60px; }
+    *{box-sizing:border-box} html,body{height:100%} html{scroll-behavior:smooth}
+    body{ margin:0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      background:
+        radial-gradient(1200px 600px at 20% -10%, rgba(123,97,255,.20), transparent 60%),
+        radial-gradient(1000px 500px at 90% -20%, rgba(46,131,255,.18), transparent 55%),
+        var(--bg); color:var(--text); line-height:1.55; }
+    .container{max-width:1100px;margin:0 auto;padding:0 16px}
+    a{color:#dbeafe;text-decoration:none} a:hover{text-decoration:underline}
+
+    /* Header */
+    .nav{position:sticky;top:0;z-index:60; backdrop-filter:saturate(180%) blur(10px);
+         background:linear-gradient(180deg, rgba(13,16,23,.70), rgba(13,16,23,.40)); border-bottom:1px solid var(--border)}
+    .nav > .container{ padding-left:max(24px, env(safe-area-inset-left) + 16px);
+      padding-right:max(24px, env(safe-area-inset-right) + 16px); }
+    .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:8px 0;height:var(--navH);gap:16px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.2px;flex:0 0 auto}
+    .logo{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:12px;
+          background:linear-gradient(135deg,#fff,#e8e8e8);color:#000;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+    .pill{display:inline-flex;align-items:center;padding:4px 9px;border-radius:999px;font-size:12px;color:#cbd5e1;
+          background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));border:1px solid var(--border)}
+
+    .nav-links{ display:flex; gap:22px; align-items:center; flex:1 1 auto; min-width:0; justify-content:flex-end;
+      overflow-x:auto; overflow-y:hidden; white-space:nowrap; -webkit-overflow-scrolling:touch; scrollbar-width:none; padding:0 8px; }
+    .nav-links::-webkit-scrollbar{display:none}
+    .nav-links a{color:var(--muted);font-size:16px;flex:0 0 auto;white-space:nowrap;padding:6px 0}
+    .nav-links a:hover{color:#fff}
+
+    .nav-toggle{display:none; border:1px solid var(--border); background:rgba(255,255,255,.05);
+      color:#e5e7eb; width:42px;height:42px;border-radius:12px;align-items:center;justify-content:center;cursor:pointer}
+    .nav-toggle:focus{outline:2px solid #9bb7ff; outline-offset:2px}
+
+    /* Mobile drawer */
+    .mobile-menu{position:fixed; inset:0; display:none; z-index:9999}
+    .mobile-menu.open{display:block}
+    .mobile-scrim{position:absolute; inset:0; background:rgba(0,0,0,.65)}
+    .mobile-panel{position:fixed; top:0; right:0; height:100vh; width:86%; max-width:420px;
+      background:#0b0c10; border-left:1px solid var(--border); box-shadow:0 10px 30px rgba(0,0,0,.35);
+      padding:18px; display:flex; flex-direction:column; gap:12px}
+    .mobile-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+    .close{border:1px solid var(--border); background:rgba(255,255,255,.06); color:#e5e7eb; width:40px;height:40px;border-radius:12px;cursor:pointer}
+    .mobile-link{display:block; padding:12px 10px; border:1px solid var(--border); border-radius:12px; background:#161922; color:#e5e7eb; text-decoration:none}
+    .mobile-actions{margin-top:auto; display:grid; grid-template-columns:1fr; gap:10px}
+    .mobile-actions .btn{width:100%}
+
+    @media (max-width: 880px){ .nav-links{display:none} .nav-toggle{display:inline-flex} }
+
+    /* Sections */
+    .section{padding:56px 0; scroll-margin-top: calc(var(--navH) + 10px)} .section h2{font-size:28px;margin:0 0 8px}
+    .hero{padding:64px 0 48px}
+    .row{display:grid;grid-template-columns:1fr;gap:28px} @media(min-width:960px){.row{grid-template-columns:1.1fr .9fr}}
+    .eyebrow{display:inline-flex;gap:10px;align-items:center;padding:7px 12px;border-radius:999px;font-size:12px;color:#e5edff;
+      border:1px solid rgba(124,152,255,.35); background:linear-gradient(180deg, rgba(124,152,255,.20), rgba(124,152,255,.06))}
+    h1{font-size:40px;line-height:1.08;margin:8px 0 8px;letter-spacing:-.4px} @media(min-width:700px){ h1{font-size:46px;} }
+    .gradient-text{background:linear-gradient(90deg, #9bb7ff, #caa8ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .lead{color:#a6adbb;font-size:17px;max-width:620px}
+    .buttons{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+    .btn{border:1px solid transparent; background:linear-gradient(#0c0f15,#0c0f15) padding-box,
+          linear-gradient(120deg, #7ba7ff, #b58bff) border-box; color:#fff;padding:12px 18px;border-radius:16px;
+          font-weight:700;letter-spacing:.2px; box-shadow:var(--shadow); transition:.2s transform,.2s opacity}
+    .btn:hover{transform:translateY(-1px)} .btn.secondary{background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02)); border:1px solid var(--border);box-shadow:none;color:#e9ecf5}
+    .btn.ghost{background:transparent; border:1px dashed var(--border)}
+    .btn.disabled{opacity:.5;cursor:not-allowed}
+    .eyeline{margin-top:8px;color:#d5def7;font-size:14px;opacity:.9}
+
+    .preview{position:relative;border-radius:24px;padding:16px; background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+             border:1px solid var(--border); box-shadow:var(--shadow)}
+    .panel{border-radius:18px;background:var(--surface);border:1px solid var(--border);padding:14px}
+    .traffic{display:flex;gap:6px} .dot{width:10px;height:10px;border-radius:999px}
+    .ring{--pct:82; --ring-bg:#242532; width:190px;height:190px;border-radius:50%;position:relative;margin:6px auto 0;
+           background: radial-gradient(closest-side, var(--surface) 84%, transparent 0 99%, var(--ring-bg) 0),
+                      conic-gradient(#77a4ff calc(var(--pct)*1%), #1f2432 0);
+           box-shadow: inset 0 0 20px rgba(0,0,0,.45);} @media(min-width:960px){ .ring{width:210px;height:210px;} }
+    .ring::after{content: attr(data-label); position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+                 font-size:26px;font-weight:800;color:#eaf0ff; text-shadow:0 2px 10px rgba(0,0,0,.35)}
+    .mini{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
+    .mini .card{border-radius:14px;border:1px solid var(--border);background:var(--glass);padding:10px;text-align:center}
+    .mini .card b{display:block;margin-bottom:4px}
+    .muted{color:var(--muted)} .grid3{display:grid;grid-template-columns:1fr;gap:14px} @media(min-width:900px){.grid3{grid-template-columns:repeat(3,1fr)}}
+    .feature{position:relative;border-radius:18px;padding:16px;background:var(--surface); border:1px solid transparent;
+      background:linear-gradient(var(--surface), var(--surface)) padding-box, linear-gradient(120deg, rgba(122,168,255,.8), rgba(200,160,255,.6)) border-box}
+    .feature h3{margin:6px 0 6px} .feature p{margin:0;color:var(--muted)}
+    .center{text-align:center} .badge{display:inline-block;background:var(--glass);border:1px solid var(--border);border-radius:999px;padding:6px 10px;font-size:12px;color:#cbd5e1}
+    .badge.below{margin-top:6px}
+    .cta-row{display:flex;gap:10px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+    .footer{border-top:1px solid var(--border);padding:24px 0;margin-top:20px}
+
+    /* Supported sites prominent card */
+    .supported-card{ margin-top:18px; padding:16px; border-radius:20px; background:#10131a; border:1px solid var(--border); box-shadow:var(--shadow) }
+    .supported-title{font-weight:800; letter-spacing:.2px; margin-bottom:10px}
+    .supported-pills{display:flex; flex-wrap:wrap; gap:10px}
+    .pill-brand{display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:999px; background:#161922; border:1px solid var(--border); font-weight:700}
+    .pill-brand .dot{width:10px;height:10px;border-radius:999px}
+    .yt .dot{background:#ff0033} .nf .dot{background:#e50914} .dp .dot{background:#1f90ff}
+
+    .vote-links{display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:10px}
+    .vote-links a.btn{text-decoration:none}
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <div class="brand">
+        <span class="logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M5 9v6h3l4 4V5L8 9H5zm13.59 3l2.7-2.7-1.42-1.42L17.17 10 14.47 7.3l-1.42 1.42L15.76 11l-2.7 2.7 1.42 1.42L17.17 12l2.7 2.7 1.42-1.42L18.59 12z"/></svg>
+        </span>
+        <span style="font-size:18px">Ad Mute</span>
+        <span class="pill">v1.4.6</span>
+      </div>
+      <div class="nav-links" id="nav-links">
+        <a href="#features">Features</a>
+        <a href="#how">How it works</a>
+        <a href="#support">Support</a>
+        <a href="#changelog">Changelog</a>
+        <a href="#help">Help</a>
+      </div>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false">☰</button>
+    </div>
+    <!-- Mobile drawer -->
+    <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+      <div class="mobile-scrim" id="mobile-scrim"></div>
+      <div class="mobile-panel">
+        <div class="mobile-top">
+          <div style="font-weight:800;letter-spacing:.2px">Menu</div>
+          <button class="close" id="close-menu" aria-label="Close">✕</button>
+        </div>
+        <a class="mobile-link" href="#features">Features</a>
+        <a class="mobile-link" href="#how">How it works</a>
+        <a class="mobile-link" href="#support">Support</a>
+        <a class="mobile-link" href="#changelog">Changelog</a>
+        <a class="mobile-link" href="#help">Help</a>
+        <div class="mobile-actions">
+          <a class="btn" data-zip href="#">Get it free</a>
+          <a class="btn secondary" href="#support">Support the project</a>
+          <a class="btn ghost" href="https://github.com/Kaboombooo/AdMute/discussions?discussions_q=category%3A%22Ideas%20%2F%20Feature%20requests%22%20sort%3Atop" target="_blank" rel="noopener">Vote on what's next</a>
+          <a class="btn ghost" href="https://github.com/Kaboombooo/AdMute/discussions/new?category=Supported%20websites" target="_blank" rel="noopener">Request a supported site</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <div class="container row">
+        <div>
+          <span class="eyebrow">🔒 Privacy‑first • Local detection • No tracking</span>
+          <h1>Mute ads automatically. <span class="gradient-text">Keep watching.</span></h1>
+          <p class="lead">Ad Mute detects ad segments and gently mutes your tab, then restores audio when the content resumes. Lightweight, respectful, and open to your feedback.</p>
+          <div class="buttons">
+            <a class="btn" id="get-chrome" data-zip href="#" rel="noopener">Get it free</a>
+            <a class="btn secondary" href="#support">Support the project</a>
+            <a class="btn ghost" href="https://github.com/Kaboombooo/AdMute/discussions?discussions_q=category%3A%22Ideas%20%2F%20Feature%20requests%22%20sort%3Atop" target="_blank" rel="noopener">Vote on what's next</a>
+          </div>
+          <div class="eyeline">⚡ Auto‑mute/auto‑unmute • ✨ Overlay status</div>
+        </div>
+        <div>
+          <div class="preview">
+            <div class="panel">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+                <div class="traffic">
+                  <span class="dot" style="background:#ef4444"></span>
+                  <span class="dot" style="background:#f59e0b"></span>
+                  <span class="dot" style="background:#22c55e"></span>
+                </div>
+                <span class="muted" style="font-size:12px">Overlay Preview</span>
+              </div>
+              <div style="display:flex;justify-content:center"><div class="ring" data-label="82%"></div></div>
+              <div class="mini">
+                <div class="card"><b>Now</b><span class="muted">Playing</span></div>
+                <div class="card"><b>Muted</b><span class="muted">no</span></div>
+                <div class="card"><b>Mode</b><span class="muted">Auto</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="section">
+      <div class="container">
+        <h2>Quiet watching, zero fuss</h2>
+        <p class="muted">A lightweight extension that respects your time and your privacy.</p>
+        <div class="supported-card">
+          <div class="supported-title">Supported websites</div>
+          <div class="supported-pills">
+            <span class="pill-brand yt"><span class="dot"></span> YouTube</span>
+            <span class="pill-brand nf"><span class="dot"></span> Netflix</span>
+            <span class="pill-brand dp"><span class="dot"></span> Disney+</span>
+          </div>
+          <div class="vote-links">
+            <a class="btn ghost" href="https://github.com/Kaboombooo/AdMute/discussions?discussions_q=category%3A%22Supported%20websites%22%20sort%3Atop" target="_blank" rel="noopener">Browse requests & upvote</a>
+            <a class="btn ghost" href="https://github.com/Kaboombooo/AdMute/discussions/new?category=Supported%20websites" target="_blank" rel="noopener">Request another site</a>
+          </div>
+        </div>
+        <div class="grid3" style="margin-top:16px">
+          <div class="feature"><h3>Auto‑mute during ads</h3><p>Detects ad segments locally and mutes your tab, then restores audio when content returns.</p></div>
+          <div class="feature"><h3>Live status overlay</h3><p>See confidence and state at a glance. Toggle overlay or switch to manual anytime.</p></div>
+          <div class="feature"><h3>Privacy‑first</h3><p>No browsing history collection. No invasive analytics. You’re in control.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="how" class="section" style="border-top:1px solid var(--border)">
+      <div class="container">
+        <h2>How it works</h2>
+        <div class="grid3" style="margin-top:16px">
+          <div class="feature"><h3>1. Add Ad Mute</h3><p>Install from your browser’s store. No account required.</p></div>
+          <div class="feature"><h3>2. Watch like normal</h3><p>We detect ad segments locally and mute/unmute the tab automatically.</p></div>
+          <div class="feature"><h3>3. You’re in control</h3><p>Use the overlay or toolbar to switch modes and report issues.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="support" class="section">
+      <div class="container center">
+        <h2 style="margin-top:8px">Support Ad Mute</h2>
+        <span class="badge below">Pay‑what‑you‑want</span>
+        <p class="muted">The extension is free. If it helps you, chip in any amount to keep development going.</p>
+        <div class="cta-row">
+          <button id="open-support-2" class="btn">Support via Paddle</button>
+          <a class="btn secondary gumroad-button" id="gumroad-btn" href="#" data-gumroad-single-product="true">Support via Gumroad</a>
+        </div>
+        <div class="tiny">Paddle/Gumroad act as merchant‑of‑record and handle tax & disputes.</div>
+      </div>
+    </section>
+
+    <section id="changelog" class="section" style="border-top:1px solid var(--border)">
+      <div class="container">
+        <h2>Changelog & Roadmap</h2>
+        <div class="grid3" style="margin-top:16px">
+          <div class="feature">
+            <div class="muted" style="font-size:12px">Aug 2025</div>
+            <h3>v1.4.6</h3>
+            <ul class="muted">
+              <li>Overlay wording tweaks (Now / Muted / Mode).</li>
+              <li>YouTube auto‑skip iteration; better ad‑end handling.</li>
+              <li>Bug fixes for Netflix ad‑end loop edge case.</li>
+            </ul>
+          </div>
+          <div class="feature">
+            <h3>Up next</h3>
+            <ul class="muted">
+              <li>Optional supporter badge in overlay.</li>
+              <li>Public beta channel with early builds.</li>
+              <li>Expanded site‑specific detectors (config UI).</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="help" class="section">
+      <div class="container grid3">
+        <div class="feature">
+          <h3>Common questions</h3>
+          <ul class="muted">
+            <li><b>Playback?</b> We only mute/unmute audio; playback continues normally.</li>
+            <li><b>Data?</b> We don’t collect browsing data. Crash logs stay local unless you send them.</li>
+            <li><b>Report a bug?</b> Email kaboomboooo@gmail.com with site + short description.</li>
+          </ul>
+        </div>
+        <div class="feature">
+          <h3>Refunds & disputes</h3>
+          <p class="muted">7‑day no‑questions refund on support payments. Contact us first; Paddle/Gumroad can also assist.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container" id="legal">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
+        <div><b>Ad Mute</b><div class="muted">Silence loud ads. Keep the show.</div></div>
+        <div><b>Legal</b><div><a href="#privacy">Privacy</a> · <a href="#terms">Terms</a></div></div>
+        <div><b>Contact</b><div class="muted">kaboomboooo@gmail.com</div></div>
+      </div>
+      <div id="privacy" class="feature" style="margin-top:16px">
+        <h3>Privacy</h3>
+        <p class="muted">We don’t track you. No cookies by default. If you add analytics later (e.g., Plausible), update this notice.</p>
+      </div>
+      <div id="terms" class="feature" style="margin-top:12px">
+        <h3>Terms</h3>
+        <p class="muted">Ad Mute is provided “as‑is.” Support payments are voluntary and unlock no required features. Refunds available within 7 days—contact us first. Paddle/Gumroad are merchant‑of‑record and handle tax/payment ops.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+  <script src="https://gumroad.com/js/gumroad.js"></script>
+
+  <script>
+    // Build absolute ZIP path (GitHub Pages or custom domain)
+    (function(){
+      const ZIP_NAME = "ad-mute-v1.7.0.zip"; // <-- updated
+      const segs = location.pathname.split("/").filter(Boolean);
+      const base = (location.hostname.endsWith(".github.io") && segs.length ? `/${segs[0]}/` : "/");
+      const zipUrl = `${base}downloads/${ZIP_NAME}`;
+      document.querySelectorAll('[data-zip]').forEach(a => {
+        a.setAttribute('href', zipUrl);
+        a.setAttribute('download', ZIP_NAME);
+      });
+      if (!window.__zipLogged){ console.log("[AdMute] Download URL:", zipUrl); window.__zipLogged = true; }
+    })();
+
+    // Smooth scroll for anchors + close drawer
+    (function(){
+      function smoothHashScroll(e){
+        const a = e.currentTarget;
+        const href = a.getAttribute('href') || '';
+        if(!href.startsWith('#')) return;
+        const id = href.slice(1);
+        const el = document.getElementById(id);
+        if(!el) return;
+        e.preventDefault();
+        el.scrollIntoView({ behavior:'smooth', block:'start' });
+        closeMenu();
+      }
+      document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click', smoothHashScroll));
+    })();
+
+    // Desktop overflow scroll helper
+    (function(){
+      const scroller = document.getElementById('nav-links');
+      if(!scroller) return;
+      scroller.addEventListener('wheel', (e) => {
+        if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+          scroller.scrollLeft += e.deltaY;
+          e.preventDefault();
+        }
+      }, { passive: false });
+    })();
+
+    // Safari download fallback
+    (function(){
+      document.querySelectorAll('[data-zip]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const href = btn.getAttribute('href');
+          if (!href || href === '#') return;
+          const a = document.createElement('a');
+          a.href = href;
+          a.setAttribute('download', 'ad-mute-v1.7.0.zip');
+          document.body.appendChild(a);
+          a.click();
+          setTimeout(()=>a.remove(), 0);
+        });
+      });
+    })();
+
+    // Collapsible menu controls
+    const toggleBtn = document.getElementById("nav-toggle");
+    const mobileMenu = document.getElementById("mobile-menu");
+    const scrim = document.getElementById("mobile-scrim");
+    const closeButton = document.getElementById("close-menu");
+    function openMenu(){ mobileMenu.classList.add("open"); toggleBtn.setAttribute("aria-expanded","true"); document.body.style.overflow="hidden"; }
+    function closeMenu(){ mobileMenu.classList.remove("open"); toggleBtn.setAttribute("aria-expanded","false"); document.body.style.overflow=""; }
+    toggleBtn.addEventListener("click", ()=> mobileMenu.classList.contains("open") ? closeMenu() : openMenu());
+    scrim.addEventListener("click", closeMenu);
+    closeButton.addEventListener("click", closeMenu);
+  </script>
+</body>
+</html>
