@@ -129,7 +129,8 @@
           <div class="buttons">
             <!-- Hardwired same-origin download; JS below adds a fallback trigger for Safari -->
             <a class="btn" id="get-chrome" href="./downloads/ad-mute-v1.6.6.zip" download="AdMute.zip" rel="noopener">Get it free</a>
-            <button class="btn secondary" id="open-support">Support the project</button>
+            <!-- CHANGED: now an anchor that scrolls to #support instead of opening modal -->
+            <a class="btn secondary" href="#support">Support the project</a>
           </div>
           <div class="eyeline">⚡ Auto‑mute/auto‑unmute • ✨ Overlay status</div>
         </div>
@@ -258,7 +259,7 @@
   <script src="https://gumroad.com/js/gumroad.js"></script>
 
   <script>
-    // 1) Horizontal scroll helper for mouse wheels on desktop
+    // Horizontal scroll helper for mouse wheels on desktop
     (function(){
       const scroller = document.getElementById('nav-links');
       if(!scroller) return;
@@ -270,14 +271,13 @@
       }, { passive: false });
     })();
 
-    // 2) Download fallback for Safari (programmatic click on hidden <a download>)
+    // Download fallback for Safari (programmatic click on hidden <a download>)
     (function(){
       const btn = document.getElementById('get-chrome');
       if(!btn) return;
       btn.addEventListener('click', (e) => {
         const href = btn.getAttribute('href');
         if (!href || href === '#') return;
-        // If browser ignores download attribute, try programmatic trigger
         const a = document.createElement('a');
         a.href = href;
         a.setAttribute('download', 'AdMute.zip');
@@ -285,6 +285,90 @@
         a.click();
         setTimeout(()=>a.remove(), 0);
       });
+    })();
+
+    // Support modal only from the Support section button
+    (function(){
+      // Build modal lazily so it doesn't impact initial paint
+      let backdrop;
+      function ensureModal(){
+        if(backdrop) return backdrop;
+        backdrop = document.createElement("div");
+        backdrop.className = "backdrop";
+        backdrop.innerHTML = \`
+          <div class="modal" role="dialog" aria-modal="true">
+            <div class="modal-head">
+              <div style="font-weight:800;letter-spacing:.2px">Support Ad Mute</div>
+              <button id="close-modal" title="Close" style="background:none;border:0;color:#cbd5e1;font-size:20px;cursor:pointer">✕</button>
+            </div>
+            <div class="tabs">
+              <div class="tab active" id="tab-paddle">Paddle (default)</div>
+              <div class="tab" id="tab-gumroad">Gumroad</div>
+            </div>
+            <div id="pane-paddle">
+              <p class="muted">Pay‑what‑you‑want via Paddle. Enter any amount and proceed to a secure checkout.</p>
+              <div class="chip-row" id="chips">
+                <span class="chip" data-v="3">$3</span>
+                <span class="chip" data-v="5">$5</span>
+                <span class="chip" data-v="10">$10</span>
+                <span class="chip" data-v="20">$20</span>
+              </div>
+              <div class="row2">
+                <label><div class="muted" style="font-size:12px">Amount (USD)</div><input id="amount" class="input" value="5" inputmode="decimal"></label>
+                <label><div class="muted" style="font-size:12px">Email (optional)</div><input id="email" class="input" placeholder="you@example.com"></label>
+              </div>
+              <button id="paddle-cta" class="btn full" style="margin-top:10px">Loading Paddle…</button>
+              <div class="tiny">Paddle is merchant‑of‑record (tax & disputes handled by them).</div>
+            </div>
+            <div id="pane-gumroad" style="display:none">
+              <p class="muted">Prefer Gumroad? Click below. Make sure your product is set to <b>$0+</b> for PWYW.</p>
+              <a class="btn full gumroad-button" href="https://gumroad.com/l/your-admute-support" data-gumroad-single-product="true">Support via Gumroad</a>
+            </div>
+          </div>\`;
+        document.body.appendChild(backdrop);
+
+        function openModal(){ backdrop.style.display="flex"; document.getElementById("amount").focus(); }
+        function closeModal(){ backdrop.style.display="none"; }
+        backdrop.addEventListener("click", (e)=>{ if(e.target === backdrop) closeModal(); });
+        backdrop.querySelector("#close-modal").addEventListener("click", closeModal);
+        document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeModal(); });
+
+        // Tabs
+        const tabP = backdrop.querySelector("#tab-paddle");
+        const tabG = backdrop.querySelector("#tab-gumroad");
+        const paneP = backdrop.querySelector("#pane-paddle");
+        const paneG = backdrop.querySelector("#pane-gumroad");
+        tabP.addEventListener("click", ()=>{ tabP.classList.add("active"); tabG.classList.remove("active"); paneP.style.display="block"; paneG.style.display="none"; });
+        tabG.addEventListener("click", ()=>{ tabG.classList.add("active"); tabP.classList.remove("active"); paneG.style.display="block"; paneP.style.display="none"; });
+
+        // Paddle init + button states
+        (function initPaddle(){
+          if(!window.Paddle) return;
+          try{
+            window.Paddle.Environment.set("sandbox");
+            window.Paddle.Setup({ token: "pk_test_or_live_token_here" });
+            const cta = backdrop.querySelector("#paddle-cta");
+            cta.textContent = "Continue with Paddle";
+            cta.addEventListener("click", ()=>{
+              const val = parseFloat(document.getElementById("amount").value||"0");
+              if(!isFinite(val) || val<=0){ alert("Please enter a valid amount > 0"); return; }
+              const email = (document.getElementById("email").value||"").trim();
+              window.Paddle.Checkout.open({ items:[{ priceId: "pri_XXXXXXXXXXXX", quantity: 1 }], customer: email?{email}:undefined, custom:{source:"admute-site", pwyw_amount: val.toFixed(2)} });
+            });
+          }catch(e){}
+        })();
+
+        backdrop.open = ()=>{ backdrop.style.display="flex"; document.getElementById("amount").focus(); };
+        return backdrop;
+      }
+
+      const supportBtn = document.getElementById("open-support-2");
+      if(supportBtn){
+        supportBtn.addEventListener("click", ()=>{
+          const m = ensureModal();
+          m.open();
+        });
+      }
     })();
   </script>
 </body>
