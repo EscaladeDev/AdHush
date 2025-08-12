@@ -32,7 +32,7 @@
     .logo{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:12px;
           background:linear-gradient(135deg,#fff,#e8e8e8);color:#000;box-shadow:0 4px 12px rgba(0,0,0,.2)}
     .nav-links a{color:var(--muted);margin-left:18px;font-size:14px} .nav-links a:hover{color:#fff}
-    .pill{display:inline-flex;align-items:center;padding:5px 10px;border-radius:999px;font-size:12px;color:var(--muted);
+    .pill{display:inline-flex;align-items:center;padding:5px 10px;border-radius:999px;font-size:12px;color:#muted;
           background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));border:1px solid var(--border)}
     .section{padding:64px 0; scroll-margin-top: calc(var(--navH) + 12px)} .section h2{font-size:30px;margin:0 0 8px}
     .hero{padding:72px 0 56px}
@@ -240,13 +240,15 @@
     const PADDLE_TOKEN = "pk_test_or_live_token_here";
     const PADDLE_PRICE_ID = "pri_XXXXXXXXXXXX";
     const GUMROAD_PRODUCT_URL = "https://gumroad.com/l/your-admute-support";
-    const CHROME_STORE_URL = "#"; // e.g., Chrome Web Store link
 
-    // Helper: guard links if placeholders
+    // IMPORTANT: This now points to your same-origin ZIP
+    const CHROME_STORE_URL = "./downloads/ad-mute-v1.6.6.zip";
+
+    // Helper: guard links (used for Gumroad only)
     function guardLink(id, url, msg){
       const el = document.getElementById(id);
       if(!el) return;
-      if(!url || url === "#" || url.startsWith("http") === false){
+      if(!url || url === "#"){
         el.classList.add("disabled");
         el.addEventListener("click", (e)=>{ e.preventDefault(); alert(msg); });
       }else{
@@ -254,7 +256,36 @@
       }
     }
 
-    guardLink("get-chrome", CHROME_STORE_URL, "Add your Chrome Web Store URL in the config section near the bottom of index.html.");
+    // New: smarter 'Get it free' behavior (download if same-origin file; else open in new tab)
+    function setupGetItFree() {
+      const el = document.getElementById("get-chrome");
+      const url = CHROME_STORE_URL;
+      if (!el) return;
+
+      if (!url || url === "#") {
+        el.classList.add("disabled");
+        el.addEventListener("click", (e)=>{ e.preventDefault(); alert("Add your ZIP under /downloads and set CHROME_STORE_URL in the config block."); });
+        return;
+      }
+
+      const isSameOrigin = url.startsWith("/") || url.startsWith("./") || url.includes(location.hostname);
+      const isFile = /\.(zip|crx|xpi|dmg|exe|msi|pkg|tar\.gz)$/i.test(url);
+
+      el.setAttribute("href", url);
+
+      if (isSameOrigin && isFile) {
+        el.setAttribute("download", "AdMute.zip");
+        el.removeAttribute("target");
+        el.removeAttribute("rel");
+      } else {
+        el.removeAttribute("download");
+        el.setAttribute("target", "_blank");
+        el.setAttribute("rel", "noopener");
+      }
+    }
+
+    // Wire links
+    setupGetItFree(); // handles Get it free download
     guardLink("gumroad-btn", GUMROAD_PRODUCT_URL, "Add your Gumroad product URL (set to $0+) in the config section near the bottom of index.html.");
 
     // Modal
