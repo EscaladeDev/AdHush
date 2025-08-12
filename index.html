@@ -11,7 +11,7 @@
       --bg:#0b0c10; --surface:#0f1116; --glass:rgba(255,255,255,.04);
       --text:#eef2f6; --muted:#a6adbb; --border:rgba(255,255,255,.12);
       --accent:#7aa8ff; --accent-2:#a87bff; --ring:#4f46e5;
-      --shadow:0 10px 30px rgba(0,0,0,.35); --radius:18px; --navH:64px;
+      --shadow:0 10px 30px rgba(0,0,0,.35); --radius:18px; --navH:60px;
     }
     *{box-sizing:border-box} html,body{height:100%}
     html{scroll-behavior:smooth}
@@ -23,53 +23,82 @@
         var(--bg);
       color:var(--text); line-height:1.55;
     }
-    .container{max-width:1100px;margin:0 auto;padding:0 20px}
+    .container{max-width:1100px;margin:0 auto;padding:0 16px}
     a{color:#dbeafe;text-decoration:none} a:hover{text-decoration:underline}
-    .nav{position:sticky;top:0;z-index:50; backdrop-filter:saturate(180%) blur(10px);
+    .nav{position:sticky;top:0;z-index:60; backdrop-filter:saturate(180%) blur(10px);
          background:linear-gradient(180deg, rgba(13,16,23,.70), rgba(13,16,23,.40)); border-bottom:1px solid var(--border)}
-    .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 0;height:var(--navH)}
-    .brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.2px}
-    .logo{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:12px;
+    .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:8px 0;height:var(--navH)}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.2px}
+    .logo{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:12px;
           background:linear-gradient(135deg,#fff,#e8e8e8);color:#000;box-shadow:0 4px 12px rgba(0,0,0,.2)}
-    .nav-links a{color:var(--muted);margin-left:18px;font-size:14px} .nav-links a:hover{color:#fff}
-    .pill{display:inline-flex;align-items:center;padding:5px 10px;border-radius:999px;font-size:12px;color:#muted;
-          background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));border:1px solid var(--border)}
-    .section{padding:64px 0; scroll-margin-top: calc(var(--navH) + 12px)} .section h2{font-size:30px;margin:0 0 8px}
-    .hero{padding:72px 0 56px}
-    .row{display:grid;grid-template-columns:1fr;gap:36px} @media(min-width:960px){.row{grid-template-columns:1.1fr .9fr}}
+    .brand-text{display:flex;flex-direction:column;line-height:1}
+    .brand-text span:first-child{font-size:18px}
+    .brand-text span:last-child{font-size:18px}
+    .pill{display:inline-flex;align-items:center;padding:4px 9px;border-radius:999px;font-size:12px;color:#cbd5e1;
+          background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));border:1px solid var(--border);margin-left:6px}
+    .nav-links{display:flex;align-items:center;gap:18px}
+    .nav-links a{color:var(--muted);font-size:14px;white-space:nowrap}
+    .nav-links a:hover{color:#fff}
+    .nav-toggle{display:none; border:1px solid var(--border); background:rgba(255,255,255,.04); color:#e5e7eb;
+      width:40px;height:40px;border-radius:10px;align-items:center;justify-content:center;cursor:pointer}
+    .nav-toggle:focus{outline:2px solid #9bb7ff; outline-offset:2px}
+
+    /* Mobile drawer */
+    .mobile-menu{position:fixed; inset:0; display:none; z-index:70}
+    .mobile-menu.open{display:block}
+    .mobile-scrim{position:absolute; inset:0; background:rgba(0,0,0,.5)}
+    .mobile-panel{position:absolute; top:0; right:0; height:100%; width:84%; max-width:360px;
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
+      backdrop-filter: blur(16px); border-left:1px solid var(--border); box-shadow:var(--shadow); padding:16px; display:flex; flex-direction:column; gap:12px}
+    .mobile-link{display:block; padding:12px 10px; border:1px solid var(--border); border-radius:12px; background:var(--glass); color:#e5e7eb; text-decoration:none}
+    .mobile-actions{margin-top:auto; display:grid; grid-template-columns:1fr; gap:10px}
+    .mobile-actions .btn{width:100%}
+
+    /* Responsive rules */
+    @media (max-width: 920px){
+      .nav-links{display:none}
+      .nav-toggle{display:inline-flex}
+      .brand-text{display:block}
+    }
+
+    .section{padding:56px 0; scroll-margin-top: calc(var(--navH) + 10px)} .section h2{font-size:28px;margin:0 0 8px}
+    .hero{padding:64px 0 48px}
+    .row{display:grid;grid-template-columns:1fr;gap:28px} @media(min-width:960px){.row{grid-template-columns:1.1fr .9fr}}
     .eyebrow{display:inline-flex;gap:10px;align-items:center;padding:7px 12px;border-radius:999px;font-size:12px;color:#e5edff;
       border:1px solid rgba(124,152,255,.35); background:linear-gradient(180deg, rgba(124,152,255,.20), rgba(124,152,255,.06))}
-    h1{font-size:46px;line-height:1.08;margin:12px 0 10px;letter-spacing:-.4px}
+    h1{font-size:40px;line-height:1.08;margin:8px 0 8px;letter-spacing:-.4px}
+    @media(min-width:700px){ h1{font-size:46px;} }
     .gradient-text{background:linear-gradient(90deg, #9bb7ff, #caa8ff);-webkit-background-clip:text;background-clip:text;color:transparent}
-    .lead{color:var(--muted);font-size:18px;max-width:620px}
-    .buttons{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}
+    .lead{color:var(--muted);font-size:17px;max-width:620px}
+    .buttons{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
     .btn{border:1px solid transparent; background:linear-gradient(#0c0f15,#0c0f15) padding-box,
           linear-gradient(120deg, #7ba7ff, #b58bff) border-box; color:#fff;padding:12px 18px;border-radius:16px;
           font-weight:700;letter-spacing:.2px; box-shadow:var(--shadow); transition:.2s transform,.2s opacity}
     .btn:hover{transform:translateY(-1px)} .btn.secondary{background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02)); border:1px solid var(--border);box-shadow:none;color:#e9ecf5}
     .btn.disabled{opacity:.5;cursor:not-allowed}
-    .eyeline{margin-top:10px;color:#d5def7;font-size:14px;opacity:.9}
-    .preview{position:relative;border-radius:24px;padding:22px; background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+    .eyeline{margin-top:8px;color:#d5def7;font-size:14px;opacity:.9}
+    .preview{position:relative;border-radius:24px;padding:16px; background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
              border:1px solid var(--border); box-shadow:var(--shadow)}
-    .panel{border-radius:18px;background:var(--surface);border:1px solid var(--border);padding:16px}
+    .panel{border-radius:18px;background:var(--surface);border:1px solid var(--border);padding:14px}
     .traffic{display:flex;gap:6px} .dot{width:10px;height:10px;border-radius:999px}
-    .ring{--pct:82; --ring-bg:#242532; width:210px;height:210px;border-radius:50%;position:relative;margin:8px auto 0;
+    .ring{--pct:82; --ring-bg:#242532; width:190px;height:190px;border-radius:50%;position:relative;margin:6px auto 0;
            background: radial-gradient(closest-side, var(--surface) 84%, transparent 0 99%, var(--ring-bg) 0),
                       conic-gradient(#77a4ff calc(var(--pct)*1%), #1f2432 0);
            box-shadow: inset 0 0 20px rgba(0,0,0,.45);}
+    @media(min-width:960px){ .ring{width:210px;height:210px;} }
     .ring::after{content: attr(data-label); position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-                 font-size:28px;font-weight:800;color:#eaf0ff; text-shadow:0 2px 10px rgba(0,0,0,.35)}
-    .mini{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+                 font-size:26px;font-weight:800;color:#eaf0ff; text-shadow:0 2px 10px rgba(0,0,0,.35)}
+    .mini{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
     .mini .card{border-radius:14px;border:1px solid var(--border);background:var(--glass);padding:10px;text-align:center}
     .mini .card b{display:block;margin-bottom:4px}
     .muted{color:var(--muted)} .grid3{display:grid;grid-template-columns:1fr;gap:14px} @media(min-width:900px){.grid3{grid-template-columns:repeat(3,1fr)}}
-    .feature{position:relative;border-radius:18px;padding:18px;background:var(--surface); border:1px solid transparent;
+    .feature{position:relative;border-radius:18px;padding:16px;background:var(--surface); border:1px solid transparent;
       background:linear-gradient(var(--surface), var(--surface)) padding-box, linear-gradient(120deg, rgba(122,168,255,.8), rgba(200,160,255,.6)) border-box}
     .feature h3{margin:6px 0 6px} .feature p{margin:0;color:var(--muted)}
     .center{text-align:center} .badge{display:inline-block;background:var(--glass);border:1px solid var(--border);border-radius:999px;padding:6px 10px;font-size:12px;color:#cbd5e1}
-    .cta-row{display:flex;gap:12px;justify-content:center;margin-top:14px;flex-wrap:wrap}
-    .footer{border-top:1px solid var(--border);padding:30px 0;margin-top:24px}
-    .backdrop{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;padding:16px;z-index:60}
+    .cta-row{display:flex;gap:10px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+    .footer{border-top:1px solid var(--border);padding:24px 0;margin-top:20px}
+    .backdrop{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;padding:16px;z-index:80}
     .modal{width:100%;max-width:640px;border-radius:22px;padding:18px; background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
            border:1px solid var(--border);box-shadow:var(--shadow)}
     .modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
@@ -88,11 +117,29 @@
         <span class="logo" aria-hidden="true">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M5 9v6h3l4 4V5L8 9H5zm13.59 3l2.7-2.7-1.42-1.42L17.17 10 14.47 7.3l-1.42 1.42L15.76 11l-2.7 2.7 1.42 1.42L17.17 12l2.7 2.7 1.42-1.42L18.59 12z"/></svg>
         </span>
-        <span>Ad Mute</span>
+        <div class="brand-text">
+          <span>Ad Mute</span>
+        </div>
         <span class="pill">v1.4.6</span>
       </div>
       <div class="nav-links">
         <a href="#features">Features</a><a href="#how">How it works</a><a href="#support">Support</a><a href="#changelog">Changelog</a><a href="#help">Help</a>
+      </div>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
+    </div>
+    <!-- Mobile drawer -->
+    <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+      <div class="mobile-scrim" id="mobile-scrim"></div>
+      <div class="mobile-panel">
+        <a class="mobile-link" href="#features">Features</a>
+        <a class="mobile-link" href="#how">How it works</a>
+        <a class="mobile-link" href="#support">Support</a>
+        <a class="mobile-link" href="#changelog">Changelog</a>
+        <a class="mobile-link" href="#help">Help</a>
+        <div class="mobile-actions">
+          <a class="btn" href="#" id="get-chrome-mobile">Get it free</a>
+          <button class="btn secondary" id="open-support-mobile">Support the project</button>
+        </div>
       </div>
     </div>
   </nav>
@@ -230,7 +277,6 @@
     </div>
   </footer>
 
-  <!-- Only checkout scripts are external -->
   <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
   <script src="https://gumroad.com/js/gumroad.js"></script>
 
@@ -241,54 +287,75 @@
     const PADDLE_PRICE_ID = "pri_XXXXXXXXXXXX";
     const GUMROAD_PRODUCT_URL = "https://gumroad.com/l/your-admute-support";
 
-    // IMPORTANT: This now points to your same-origin ZIP
+    // ZIP path (same-origin)
     const CHROME_STORE_URL = "./downloads/ad-mute-v1.6.6.zip";
 
-    // Helper: guard links (used for Gumroad only)
-    function guardLink(id, url, msg){
-      const el = document.getElementById(id);
-      if(!el) return;
-      if(!url || url === "#"){
-        el.classList.add("disabled");
-        el.addEventListener("click", (e)=>{ e.preventDefault(); alert(msg); });
-      }else{
-        el.setAttribute("href", url);
-      }
+    // ----- Mobile menu
+    const toggleBtn = document.getElementById("nav-toggle");
+    const mobileMenu = document.getElementById("mobile-menu");
+    const scrim = document.getElementById("mobile-scrim");
+
+    function openMenu(){ mobileMenu.classList.add("open"); toggleBtn.setAttribute("aria-expanded","true"); document.body.style.overflow="hidden"; }
+    function closeMenu(){ mobileMenu.classList.remove("open"); toggleBtn.setAttribute("aria-expanded","false"); document.body.style.overflow=""; }
+
+    toggleBtn.addEventListener("click", ()=> mobileMenu.classList.contains("open") ? closeMenu() : openMenu());
+    scrim.addEventListener("click", closeMenu);
+    mobileMenu.querySelectorAll("a.mobile-link").forEach(a=>a.addEventListener("click", closeMenu));
+
+    // Wire Support button inside drawer
+    document.getElementById("open-support-mobile").addEventListener("click", ()=>{ closeMenu(); openModal(); });
+
+    // ----- Download helper
+    function triggerDownload(url, filename){
+      const a = document.createElement("a");
+      a.href = url;
+      a.setAttribute("download", filename || "");
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
     }
 
-    // New: smarter 'Get it free' behavior (download if same-origin file; else open in new tab)
-    function setupGetItFree() {
-      const el = document.getElementById("get-chrome");
+    function setupGetItFree(){
+      const mainBtn = document.getElementById("get-chrome");
+      const mobileBtn = document.getElementById("get-chrome-mobile");
       const url = CHROME_STORE_URL;
-      if (!el) return;
 
-      if (!url || url === "#") {
-        el.classList.add("disabled");
-        el.addEventListener("click", (e)=>{ e.preventDefault(); alert("Add your ZIP under /downloads and set CHROME_STORE_URL in the config block."); });
-        return;
+      function wire(el){
+        if(!el) return;
+        if(!url || url === "#"){
+          el.classList.add("disabled");
+          el.addEventListener("click", (e)=>{ e.preventDefault(); alert("Add your ZIP under /downloads and set CHROME_STORE_URL."); });
+          return;
+        }
+        const u = new URL(url, location.href);
+        const isSameOrigin = u.origin === location.origin;
+        const isFile = /\.(zip|crx|xpi|dmg|exe|msi|pkg|tar\.gz)$/i.test(u.pathname);
+
+        if(isSameOrigin && isFile){
+          el.setAttribute("href", url);
+          el.addEventListener("click", (e)=>{ e.preventDefault(); triggerDownload(url, "AdMute.zip"); closeMenu?.(); });
+        }else{
+          el.setAttribute("href", url);
+          el.setAttribute("target","_blank");
+          el.setAttribute("rel","noopener");
+        }
       }
+      wire(mainBtn); wire(mobileBtn);
+    }
+    setupGetItFree();
 
-      const isSameOrigin = url.startsWith("/") || url.startsWith("./") || url.includes(location.hostname);
-      const isFile = /\.(zip|crx|xpi|dmg|exe|msi|pkg|tar\.gz)$/i.test(url);
-
-      el.setAttribute("href", url);
-
-      if (isSameOrigin && isFile) {
-        el.setAttribute("download", "AdMute.zip");
-        el.removeAttribute("target");
-        el.removeAttribute("rel");
-      } else {
-        el.removeAttribute("download");
-        el.setAttribute("target", "_blank");
-        el.setAttribute("rel", "noopener");
+    // ----- Gumroad link guard
+    const gumEl = document.getElementById("gumroad-btn");
+    if(gumEl){
+      if(!GUMROAD_PRODUCT_URL || GUMROAD_PRODUCT_URL === "#"){
+        gumEl.classList.add("disabled");
+        gumEl.addEventListener("click",(e)=>{ e.preventDefault(); alert("Add your Gumroad product URL (set to $0+) in the config section."); });
+      }else{
+        gumEl.setAttribute("href", GUMROAD_PRODUCT_URL);
       }
     }
 
-    // Wire links
-    setupGetItFree(); // handles Get it free download
-    guardLink("gumroad-btn", GUMROAD_PRODUCT_URL, "Add your Gumroad product URL (set to $0+) in the config section near the bottom of index.html.");
-
-    // Modal
+    // ----- Support modal (same as before)
     const backdrop = document.createElement("div");
     backdrop.className = "backdrop";
     backdrop.innerHTML = \`
@@ -327,9 +394,9 @@
     function closeModal(){ backdrop.style.display="none"; }
     document.getElementById("open-support").addEventListener("click", openModal);
     document.getElementById("open-support-2").addEventListener("click", openModal);
+    document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeModal(); });
     backdrop.addEventListener("click", (e)=>{ if(e.target === backdrop) closeModal(); });
     backdrop.querySelector("#close-modal").addEventListener("click", closeModal);
-    document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeModal(); });
 
     // Tabs
     const tabPaddle = backdrop.querySelector("#tab-paddle");
@@ -358,7 +425,6 @@
       }catch(e){ alert("Couldn’t start checkout. Verify your Paddle token & price ID."); }
     }
     window.addEventListener("load", ()=>{
-      // try init immediately and shortly after to account for CDN delay
       initPaddle();
       setTimeout(initPaddle, 1200);
 
@@ -366,9 +432,7 @@
       const chips = backdrop.querySelectorAll("#chips .chip");
       const amountInput = backdrop.querySelector("#amount");
       chips.forEach(ch => ch.addEventListener("click", ()=>{ amountInput.value = ch.dataset.v; }));
-      // submit on enter
       amountInput.addEventListener("keydown", (e)=>{ if(e.key === "Enter"){ document.getElementById("paddle-cta").click(); }});
-      // CTA
       backdrop.querySelector("#paddle-cta").addEventListener("click", ()=>{
         const amount = amountInput.value;
         const email = backdrop.querySelector("#email").value.trim();
