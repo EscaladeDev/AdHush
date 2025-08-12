@@ -1,0 +1,15 @@
+title: "[Site] "
+labels: ["site-request"]
+body:
+  - type: input
+    id: site
+    attributes:
+      label: Site name
+      placeholder: e.g., Hulu
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Anything we should know?
+      placeholder: Page URLs, behavior, regional notes, etc.
