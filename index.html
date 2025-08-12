@@ -26,23 +26,22 @@
     .container{max-width:1100px;margin:0 auto;padding:0 16px}
     a{color:#dbeafe;text-decoration:none} a:hover{text-decoration:underline}
 
-    /* Nav */
+    /* Header */
     .nav{position:sticky;top:0;z-index:60; backdrop-filter:saturate(180%) blur(10px);
          background:linear-gradient(180deg, rgba(13,16,23,.70), rgba(13,16,23,.40)); border-bottom:1px solid var(--border)}
-    .nav-inner{display:flex;align-items:center;gap:14px;padding:8px 0;height:var(--navH)}
+    .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:8px 0;height:var(--navH);gap:16px}
     .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.2px;flex:0 0 auto}
     .logo{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:12px;
           background:linear-gradient(135deg,#fff,#e8e8e8);color:#000;box-shadow:0 4px 12px rgba(0,0,0,.2)}
     .pill{display:inline-flex;align-items:center;padding:4px 9px;border-radius:999px;font-size:12px;color:#cbd5e1;
           background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));border:1px solid var(--border)}
 
-    /* Single-line scrollable nav links */
+    /* Single-line scrollable nav links (no mask for reliability) */
     .nav-links{
       display:flex; gap:18px; align-items:center;
-      flex:1 1 auto; min-width:0;
+      flex:1 1 auto; min-width:0; justify-content:flex-end;
       overflow-x:auto; overflow-y:hidden; white-space:nowrap;
       -webkit-overflow-scrolling:touch; scrollbar-width:none;
-      mask-image: linear-gradient(to right, transparent 0, black 14px, black calc(100% - 14px), transparent 100%);
     }
     .nav-links::-webkit-scrollbar{display:none}
     .nav-links a{color:var(--muted);font-size:14px;flex:0 0 auto;white-space:nowrap;padding:6px 0}
@@ -127,10 +126,8 @@
           <h1>Mute ads automatically. <span class="gradient-text">Keep watching.</span></h1>
           <p class="lead">Ad Mute detects ad segments and gently mutes your tab, then restores audio when the content resumes. Lightweight, respectful, and open to your feedback.</p>
           <div class="buttons">
-            <!-- Hardwired same-origin download; JS below adds a fallback trigger for Safari -->
             <a class="btn" id="get-chrome" href="./downloads/ad-mute-v1.6.6.zip" download="AdMute.zip" rel="noopener">Get it free</a>
-            <!-- CHANGED: now an anchor that scrolls to #support instead of opening modal -->
-            <a class="btn secondary" href="#support">Support the project</a>
+            <a class="btn secondary" href="#support" id="support-hero">Support the project</a>
           </div>
           <div class="eyeline">⚡ Auto‑mute/auto‑unmute • ✨ Overlay status</div>
         </div>
@@ -259,6 +256,21 @@
   <script src="https://gumroad.com/js/gumroad.js"></script>
 
   <script>
+    // Smooth scroll fallback (ensures header height is respected)
+    (function(){
+      function smoothHashScroll(e){
+        const a = e.currentTarget;
+        const href = a.getAttribute('href') || '';
+        if(!href.startsWith('#')) return;
+        const id = href.slice(1);
+        const el = document.getElementById(id);
+        if(!el) return;
+        e.preventDefault();
+        el.scrollIntoView({ behavior:'smooth', block:'start' });
+      }
+      document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click', smoothHashScroll));
+    })();
+
     // Horizontal scroll helper for mouse wheels on desktop
     (function(){
       const scroller = document.getElementById('nav-links');
@@ -287,9 +299,8 @@
       });
     })();
 
-    // Support modal only from the Support section button
+    // Support modal only in the Support section
     (function(){
-      // Build modal lazily so it doesn't impact initial paint
       let backdrop;
       function ensureModal(){
         if(backdrop) return backdrop;
@@ -341,7 +352,7 @@
         tabP.addEventListener("click", ()=>{ tabP.classList.add("active"); tabG.classList.remove("active"); paneP.style.display="block"; paneG.style.display="none"; });
         tabG.addEventListener("click", ()=>{ tabG.classList.add("active"); tabP.classList.remove("active"); paneG.style.display="block"; paneP.style.display="none"; });
 
-        // Paddle init + button states
+        // Paddle init + CTA
         (function initPaddle(){
           if(!window.Paddle) return;
           try{
@@ -358,15 +369,14 @@
           }catch(e){}
         })();
 
-        backdrop.open = ()=>{ backdrop.style.display="flex"; document.getElementById("amount").focus(); };
+        backdrop.open = ()=>{ openModal(); };
         return backdrop;
       }
 
       const supportBtn = document.getElementById("open-support-2");
       if(supportBtn){
         supportBtn.addEventListener("click", ()=>{
-          const m = ensureModal();
-          m.open();
+          const m = ensureModal(); m.open();
         });
       }
     })();
