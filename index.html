@@ -29,25 +29,20 @@
     /* Nav */
     .nav{position:sticky;top:0;z-index:60; backdrop-filter:saturate(180%) blur(10px);
          background:linear-gradient(180deg, rgba(13,16,23,.70), rgba(13,16,23,.40)); border-bottom:1px solid var(--border)}
-    .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:8px 0;height:var(--navH);gap:14px}
+    .nav-inner{display:flex;align-items:center;gap:14px;padding:8px 0;height:var(--navH)}
     .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.2px;flex:0 0 auto}
     .logo{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:12px;
           background:linear-gradient(135deg,#fff,#e8e8e8);color:#000;box-shadow:0 4px 12px rgba(0,0,0,.2)}
     .pill{display:inline-flex;align-items:center;padding:4px 9px;border-radius:999px;font-size:12px;color:#cbd5e1;
           background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));border:1px solid var(--border)}
 
-    /* NEW: single-line, horizontally scrollable links (no wrap) */
+    /* Single-line scrollable nav links */
     .nav-links{
-      display:flex;
-      gap:18px;
-      flex:1 1 auto;
-      min-width:0;
-      overflow-x:auto;
-      overflow-y:hidden;
-      white-space:nowrap;
-      -webkit-overflow-scrolling:touch;
-      scrollbar-width:none;
-      align-items:center;
+      display:flex; gap:18px; align-items:center;
+      flex:1 1 auto; min-width:0;
+      overflow-x:auto; overflow-y:hidden; white-space:nowrap;
+      -webkit-overflow-scrolling:touch; scrollbar-width:none;
+      mask-image: linear-gradient(to right, transparent 0, black 14px, black calc(100% - 14px), transparent 100%);
     }
     .nav-links::-webkit-scrollbar{display:none}
     .nav-links a{color:var(--muted);font-size:14px;flex:0 0 auto;white-space:nowrap;padding:6px 0}
@@ -114,7 +109,7 @@
         <span style="font-size:18px">Ad Mute</span>
         <span class="pill">v1.4.6</span>
       </div>
-      <div class="nav-links">
+      <div class="nav-links" id="nav-links">
         <a href="#features">Features</a>
         <a href="#how">How it works</a>
         <a href="#support">Support</a>
@@ -132,8 +127,8 @@
           <h1>Mute ads automatically. <span class="gradient-text">Keep watching.</span></h1>
           <p class="lead">Ad Mute detects ad segments and gently mutes your tab, then restores audio when the content resumes. Lightweight, respectful, and open to your feedback.</p>
           <div class="buttons">
-            <!-- Hardwired same-origin download -->
-            <a class="btn" id="get-chrome" href="downloads/ad-mute-v1.6.6.zip" download="AdMute.zip">Get it free</a>
+            <!-- Hardwired same-origin download; JS below adds a fallback trigger for Safari -->
+            <a class="btn" id="get-chrome" href="./downloads/ad-mute-v1.6.6.zip" download="AdMute.zip" rel="noopener">Get it free</a>
             <button class="btn secondary" id="open-support">Support the project</button>
           </div>
           <div class="eyeline">⚡ Auto‑mute/auto‑unmute • ✨ Overlay status</div>
@@ -258,113 +253,39 @@
     </div>
   </footer>
 
-  <!-- Checkout scripts -->
+  <!-- Minimal external scripts for payments -->
   <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
   <script src="https://gumroad.com/js/gumroad.js"></script>
 
   <script>
-    // Minimal config kept if you later want to switch to store links.
-    const PADDLE_ENV = "sandbox"; // "sandbox" | "production"
-    const PADDLE_TOKEN = "pk_test_or_live_token_here";
-    const PADDLE_PRICE_ID = "pri_XXXXXXXXXXXX";
-    const GUMROAD_PRODUCT_URL = "https://gumroad.com/l/your-admute-support";
-
-    // Horizontal scroll helper for desktop mouse wheels
-    const scroller = document.querySelector('.nav-links');
-    if (scroller) {
+    // 1) Horizontal scroll helper for mouse wheels on desktop
+    (function(){
+      const scroller = document.getElementById('nav-links');
+      if(!scroller) return;
       scroller.addEventListener('wheel', (e) => {
         if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
           scroller.scrollLeft += e.deltaY;
           e.preventDefault();
         }
       }, { passive: false });
-    }
+    })();
 
-    // ---- Support modal
-    const backdrop = document.createElement("div");
-    backdrop.className = "backdrop";
-    backdrop.innerHTML = \`
-      <div class="modal" role="dialog" aria-modal="true">
-        <div class="modal-head">
-          <div style="font-weight:800;letter-spacing:.2px">Support Ad Mute</div>
-          <button id="close-modal" title="Close" style="background:none;border:0;color:#cbd5e1;font-size:20px;cursor:pointer">✕</button>
-        </div>
-        <div class="tabs">
-          <div class="tab active" id="tab-paddle">Paddle (default)</div>
-          <div class="tab" id="tab-gumroad">Gumroad</div>
-        </div>
-        <div id="pane-paddle">
-          <p class="muted">Pay‑what‑you‑want via Paddle. Enter any amount and proceed to a secure checkout.</p>
-          <div class="chip-row" id="chips">
-            <span class="chip" data-v="3">$3</span>
-            <span class="chip" data-v="5">$5</span>
-            <span class="chip" data-v="10">$10</span>
-            <span class="chip" data-v="20">$20</span>
-          </div>
-          <div class="row2">
-            <label><div class="muted" style="font-size:12px">Amount (USD)</div><input id="amount" class="input" value="5" inputmode="decimal"></label>
-            <label><div class="muted" style="font-size:12px">Email (optional)</div><input id="email" class="input" placeholder="you@example.com"></label>
-          </div>
-          <button id="paddle-cta" class="btn full" style="margin-top:10px">Loading Paddle…</button>
-          <div class="tiny">Paddle is merchant‑of‑record (tax & disputes handled by them).</div>
-        </div>
-        <div id="pane-gumroad" style="display:none">
-          <p class="muted">Prefer Gumroad? Click below. Make sure your product is set to <b>$0+</b> for PWYW.</p>
-          <a class="btn full gumroad-button" href="\${GUMROAD_PRODUCT_URL}" data-gumroad-single-product="true">Support via Gumroad</a>
-        </div>
-      </div>\`;
-    document.body.appendChild(backdrop);
-
-    function openModal(){ backdrop.style.display="flex"; document.getElementById("amount").focus(); }
-    function closeModal(){ backdrop.style.display="none"; }
-    document.getElementById("open-support").addEventListener("click", openModal);
-    document.getElementById("open-support-2").addEventListener("click", openModal);
-    document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeModal(); });
-    backdrop.addEventListener("click", (e)=>{ if(e.target === backdrop) closeModal(); });
-    backdrop.querySelector("#close-modal").addEventListener("click", closeModal);
-
-    // Tabs
-    const tabPaddle = backdrop.querySelector("#tab-paddle");
-    const tabGumroad = backdrop.querySelector("#tab-gumroad");
-    const panePaddle = backdrop.querySelector("#pane-paddle");
-    const paneGumroad = backdrop.querySelector("#pane-gumroad");
-    tabPaddle.addEventListener("click", ()=>{ tabPaddle.classList.add("active"); tabGumroad.classList.remove("active"); panePaddle.style.display="block"; paneGumroad.style.display="none"; });
-    tabGumroad.addEventListener("click", ()=>{ tabGumroad.classList.add("active"); tabPaddle.classList.remove("active"); paneGumroad.style.display="block"; panePaddle.style.display="none"; });
-
-    // Paddle init + button states
-    let paddleReady = false;
-    function initPaddle(){
-      if(!window.Paddle) return;
-      try{
-        if(PADDLE_ENV === "sandbox"){ window.Paddle.Environment.set("sandbox"); }
-        window.Paddle.Setup({ token: PADDLE_TOKEN });
-        paddleReady = true;
-        const cta = backdrop.querySelector("#paddle-cta");
-        cta.textContent = "Continue with Paddle";
-      }catch(e){}
-    }
-    function openPaddleCheckout(amount, email){
-      if(!paddleReady){ alert("Paddle is still loading. Please try again in a moment."); return; }
-      try{
-        window.Paddle.Checkout.open({ items:[{ priceId: PADDLE_PRICE_ID, quantity: 1 }], customer: email ? { email } : undefined, custom: { source: "admute-site", pwyw_amount: Number(amount||0).toFixed(2) } });
-      }catch(e){ alert("Couldn’t start checkout. Verify your Paddle token & price ID."); }
-    }
-    window.addEventListener("load", ()=>{
-      initPaddle();
-      setTimeout(initPaddle, 1200);
-
-      const chips = backdrop.querySelectorAll("#chips .chip");
-      const amountInput = backdrop.querySelector("#amount");
-      chips.forEach(ch => ch.addEventListener("click", ()=>{ amountInput.value = ch.dataset.v; }));
-      amountInput.addEventListener("keydown", (e)=>{ if(e.key === "Enter"){ document.getElementById("paddle-cta").click(); }});
-      backdrop.querySelector("#paddle-cta").addEventListener("click", ()=>{
-        const amount = amountInput.value;
-        const email = backdrop.querySelector("#email").value.trim();
-        const val = parseFloat(amount||"0");
-        if(!isFinite(val) || val<=0){ alert("Please enter a valid amount > 0"); return; }
-        openPaddleCheckout(val, email || undefined);
+    // 2) Download fallback for Safari (programmatic click on hidden <a download>)
+    (function(){
+      const btn = document.getElementById('get-chrome');
+      if(!btn) return;
+      btn.addEventListener('click', (e) => {
+        const href = btn.getAttribute('href');
+        if (!href || href === '#') return;
+        // If browser ignores download attribute, try programmatic trigger
+        const a = document.createElement('a');
+        a.href = href;
+        a.setAttribute('download', 'AdMute.zip');
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(()=>a.remove(), 0);
       });
-    });
+    })();
   </script>
 </body>
 </html>
