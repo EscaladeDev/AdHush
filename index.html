@@ -1,6 +1,56 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <!-- PREVIEW DISCLAIMER: Not ready for use -->
+<div id="preview-banner" class="preview-banner" role="alert" aria-live="polite">
+  <strong>Private preview</strong>
+  <span>This site is not ready for use. Content and links may change. Please do not share.</span>
+  <button type="button" id="preview-dismiss" aria-label="Dismiss banner">Understood</button>
+</div>
+
+<style>
+  .preview-banner{
+    position:fixed; z-index:9999;
+    left:16px; right:16px; top:16px;
+    display:flex; gap:12px; align-items:center; justify-content:space-between;
+    padding:12px 14px; border-radius:12px;
+    background:rgba(15,18,28,.9);
+    color:#eaf0ff; border:1px solid rgba(255,255,255,.14);
+    box-shadow:0 10px 30px rgba(0,0,0,.35);
+    font:600 14px/1.4 system-ui, -apple-system, Segoe UI, Roboto, Arial;
+    backdrop-filter:saturate(160%) blur(8px);
+    transition:opacity .2s ease, transform .2s ease;
+  }
+  .preview-banner strong{font-weight:800; margin-right:6px}
+  .preview-banner button{
+    margin-left:12px; white-space:nowrap;
+    padding:8px 12px; border-radius:10px; border:1px solid rgba(255,255,255,.18);
+    background:rgba(255,255,255,.06); color:#f5f7ff; cursor:pointer; font-weight:800;
+  }
+  .preview-banner.hide{opacity:0; transform:translateY(-8px); pointer-events:none}
+  @media (max-width:520px){
+    .preview-banner{flex-direction:column; align-items:flex-start; gap:8px}
+    .preview-banner button{width:100%}
+  }
+</style>
+
+<script>
+  (function(){
+    const B = document.getElementById('preview-banner');
+    const Btn = document.getElementById('preview-dismiss');
+    // Persist per-tab so you can reload without the banner each time
+    if (sessionStorage.getItem('previewAck') === '1') { B.remove(); return; }
+    Btn.addEventListener('click', () => {
+      B.classList.add('hide');
+      sessionStorage.setItem('previewAck','1');
+      setTimeout(()=>B.remove(), 220);
+    });
+  })();
+</script>
+  <!-- PREVIEW DISCLAIMER: Not ready for use -->
+
+
+  
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Ad Mute — Mute ads automatically</title>
