@@ -232,7 +232,6 @@
 
     /* Footer */
     .footer{border-top:0; padding:24px 0; margin-top:20px}
-    .footer .fx-card{margin-top:12px}
 
     /* Changelog section (no clipping shell) */
     #changelog .fx-card{overflow:visible}
@@ -559,7 +558,7 @@ h1[data-reveal] .gradient-text{ padding-bottom:4px; box-decoration-break:clone; 
     
     // Ensure clicking Terms link inside the modal closes it and navigates to Terms section
     (function(){
-      const link = MODAL.querySelector('a[href="#terms"], a[href="terms.html"]');
+      const link = MODAL.querySelector('a[href="terms.html"]');
       if (!link) return;
       link.addEventListener('click', function(e){
         e.preventDefault();
