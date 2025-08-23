@@ -117,14 +117,7 @@
 
     /* Sections & transitions */
     .section{padding:var(--space) 0; position:relative; scroll-margin-top: calc(var(--navH) + 24px)}
-    .section + .section::before{content:""; position:absolute; left:50%; transform:translateX(-50%); width:100%;
-      top:calc(-1*var(--space)*.35); height:48px;
-      background:radial-gradient(60% 60% at 50% 0, rgba(255,255,255,.06), transparent 70%);
-      filter:blur(10px); opacity:.9; pointer-events:none}
-    .section + .section::before{
-      -webkit-mask-image: linear-gradient(to bottom, transparent, #000 8px);
-              mask-image: linear-gradient(to bottom, transparent, #000 8px);
-    }
+    .section + .section::before{ display: none !important; }
 
     .enter-glow{position:absolute; inset:-2px; border-radius:30px; pointer-events:none; opacity:0}
     .clip{--clip:26%; clip-path: inset(var(--clip) 0 0 0 round 28px);
@@ -384,39 +377,6 @@ h1[data-reveal] .gradient-text{ padding-bottom:4px; box-decoration-break:clone; 
 #support-adhush{ scroll-margin-top: 96px; }
 
 </style> 
-<style id="tos-inline-styles">
-/* Single-file Terms router: hide everything except the Terms view when path is /terms-and-conditions */
-html.terms-mode body > :not(#tos-view):not(header):not(script):not(style) { display: none !important; }
-#tos-view { display: none; }
-html.terms-mode #tos-view { display: block; }
-
-/* Simple legal card styling to match dark theme */
-#tos-view { 
-  color: #ecf1fb; background: #07080d; 
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-}
-#tos-wrap { max-width: 980px; margin: 0 auto; padding: 56px 16px; }
-#tos-card {
-  background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
-  border: 1px solid rgba(255,255,255,.12);
-  border-radius: 22px; padding: 26px; box-shadow: 0 10px 30px rgba(0,0,0,.25);
-}
-#tos-eyebrow{
-  display:inline-flex; gap:10px; align-items:center; padding:7px 12px; border-radius:999px; font-size:12px; color:#e5edff;
-  border:1px solid rgba(124,152,255,.35); background:linear-gradient(180deg, rgba(124,152,255,.20), rgba(124,152,255,.06));
-}
-#tos-meta{ display:flex; gap:12px; flex-wrap:wrap; color:#9ea9bf; font-size:14px }
-#tos-card h1{ font-size: clamp(36px,4.8vw,52px); line-height:1.1; margin:6px 0 10px }
-#tos-card h2{ font-size: 22px; margin:22px 0 8px }
-#tos-card p{ margin: 10px 0 }
-#tos-card ul{ margin: 10px 0 10px 20px }
-#tos-back { display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:14px; 
-  background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); 
-  border:1px solid rgba(255,255,255,.12); color:#e9ecf5; text-decoration:none }
-#tos-back:hover { transform: translateY(-1px); }
-</style>
-
-
 <style id="anchor-offset">#features{scroll-margin-top:128px}</style>
 
 <style id="anchor-offset-support">#support{scroll-margin-top:144px}</style>
@@ -441,10 +401,7 @@ html.terms-mode #tos-view { display: block; }
 
 <style id="anchor-offset-features">#features{scroll-margin-top:128px}</style>
 
-<style id="section-gap-cleanup">
-/* Remove faint gradient separators between sections and tighten gap after hero */
-section + .section::before{ content:none !important; background:none !important; height:0 !important; filter:none !important }
-</style>
+
 
 
 <style id="ambient-shift">
@@ -508,7 +465,7 @@ section + .section::before{ content:none !important; background:none !important;
   <div class="fx-pills"> <span class="fx-pill"><span class="fx-dot"></span> YouTube</span> <span class="fx-pill"><span class="fx-dot nf"></span> Netflix</span> <span class="fx-pill"><span class="fx-dot dp"></span> Disney+</span> <span class="fx-pill"><span class="fx-dot pv"></span> Prime Video</span> <span class="fx-pill"><span class="fx-dot sp"></span> Spotify</span>   </div>
   <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-start;margin-top:14px"><a class="btn secondary" href="https://github.com/Kaboombooo/AdHush/discussions/new?category=ideas" target="_blank" rel="noopener">Request New Site</a> <a class="btn secondary" href="https://github.com/Kaboombooo/AdHush/discussions?discussions_q=category%3A%22Ideas%22%20sort%3Atop" target="_blank" rel="noopener">See Requests & Upvote</a> <div style="flex-basis:100%;height:0"></div> <a class="btn" data-zip href="#">Get AdHush Free</a> <a class="btn" href="#support-adhush">Support AdHush</a></div>
 </div>
-</div> </div> </div> </div> <div></div> </div> </div> </section> <section id="how" class="section" data-ambient="hue-rotate(190deg) saturate(1.1) brightness(1)"> <div class="container clip" id="how-clip"> <div class="enter-glow"></div> <h2 data-reveal>How it works</h2> <div class="fx-grid" data-stagger> <div class="fx-card"><h3>1. Add AdHush</h3><p>Unzip the folder → open Chrome → go to chrome://extensions → enable Developer mode → click Load unpacked → select the unzipped folder (Important: do not delete the unzipped folder after loading—some features rely on it and may break)</p></div> <div class="fx-card"><h3>2. Watch/listen without ad noise.</h3><p>It locally detects compatible sites, mutes ad segments, and unmutes when content resumes.</p></div> <div class="fx-card"><h3>3. You’re in control</h3><p>Activate the overlay to switch modes or take manual control.</p></div> </div> </div> </section> <section data-anchor="support" class="section" data-ambient="hue-rotate(320deg) saturate(1.2) brightness(1.05)"> <div class="container clip" id="support-clip"> <div class="enter-glow"></div> <div style="display: grid; place-items: center; text-align: center; gap: 14px;"> <section id="mission" class="section"> <h2 data-reveal>Our Mission</h2> <p class="lead mission-lead">Keep your flow in an adified web.</p> <div class="fx-grid mission-cards" data-stagger> <div class="fx-card"> <h3>Protect your focus</h3> <p>Mute kicks in the moment ads start and releases when content resumes—no more volume whiplash.</p> </div> <div class="fx-card"> <h3>Privacy-first</h3> <p>100% local—no tracking, no cookies, nothing leaves your device.</p> </div> <div class="fx-card"> <h3>Coverage that grows</h3> <p>Covers YouTube, Netflix, Disney+, Prime Video, and Spotify with new sites and capabilities being added with the support of user feedback and donations.</p> </div> </div> </section> <h2 id="support-adhush" data-reveal style="margin-bottom:2px">Support AdHush</h2> <p class="lead" data-reveal style="margin:0 auto; text-align:center;">The extension is free. If it helps you, chip in any amount to keep development going.</p> <div data-stagger style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center" id="support-cta"> <a class="btn secondary" id="stripe-btn" href="https://donate.stripe.com/14AcN7aeGaYg3rcd271B600">Support via Stripe</a> </div> <p class="lead" style="margin-top:10px;color:#cfd6e6" data-reveal>Stripe securely processes donations; taxes and disputes are handled via Stripe.</p> </div> </div> </section> <section id="changelog" class="section" data-ambient="hue-rotate(270deg) saturate(1.2) brightness(1.02)"> <div class="container" id="changelog-clip"> <h2 data-reveal>Changelog & Roadmap</h2> <div class="changelog-grid" data-stagger> <div class="fx-card"> <div class="lead" style="font-size:12px;color:#9aa6c0">Aug 2025</div> <h3>v2.6.2</h3> <ul class="lead" style="color:#a6afc3"> <li>Overlay wording tweaks (Now / Muted / Mode).</li> <li>Better ad‑end handling. </li> <li>Bug fixes for Netflix ad‑end loop edge case.</li> </ul> </div> <div class="fx-card"> <h3>Up next</h3> <ul class="lead" style="color:#a6afc3"> <li>Support for more websites.</li> <li>User activated general ad detection for unsupported sites.</li> <li>Expanded site‑specific detectors (config UI).</li> </ul> </div> </div> </div> </section> </main> <footer class="footer" id="help"> <div class="container"> <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px"> <div><b>AdHush</b><div class="lead" style="color:#a6afc3">Silence loud ads. Keep your flow.</div></div> <div><b>Legal</b><div><a href="#privacy">Privacy</a> <a href="/terms">Terms</a></div></div> <div><b>Contact</b><div class="lead" style="color:#a6afc3">adhushsuppport@gmail.com</div></div> </div> <div id="privacy" class="fx-card"><h3>Privacy</h3><p class="lead" style="color:#a6afc3">100% local—no tracking, no cookies, nothing sent off your device.</p></div> <div id="terms" class="fx-card"><h3>Terms</h3><p class="lead" style="color:#a6afc3">AdHush is provided “as‑is.” Support donations are voluntary and unlock no required features. Refunds available within 30 days—contact us first. Stripe securely processes donations; taxes/receipts handled at checkout.</p></div> </div> </footer> <script>
+</div> </div> </div> </div> <div></div> </div> </div> </section> <section id="how" class="section" data-ambient="hue-rotate(190deg) saturate(1.1) brightness(1)"> <div class="container" id="how-clip"> <div class="enter-glow"></div> <h2 data-reveal>How it works</h2> <div class="fx-grid" data-stagger> <div class="fx-card"><h3>1. Add AdHush</h3><p>Unzip the folder → open Chrome → go to chrome://extensions → enable Developer mode → click Load unpacked → select the unzipped folder (Important: do not delete the unzipped folder after loading—some features rely on it and may break)</p></div> <div class="fx-card"><h3>2. Watch/listen without ad noise.</h3><p>It locally detects compatible sites, mutes ad segments, and unmutes when content resumes.</p></div> <div class="fx-card"><h3>3. You’re in control</h3><p>Activate the overlay to switch modes or take manual control.</p></div> </div> </div> </section> <section data-anchor="support" class="section" data-ambient="hue-rotate(320deg) saturate(1.2) brightness(1.05)"> <div class="container" id="support-clip"> <div class="enter-glow"></div> <div style="display: grid; place-items: center; text-align: center; gap: 14px;"> <section id="mission" class="section"> <h2 data-reveal>Our Mission</h2> <p class="lead mission-lead">Keep your flow in an adified web.</p> <div class="fx-grid mission-cards" data-stagger> <div class="fx-card"> <h3>Protect your focus</h3> <p>Mute kicks in the moment ads start and releases when content resumes—no more volume whiplash.</p> </div> <div class="fx-card"> <h3>Privacy-first</h3> <p>100% local—no tracking, no cookies, nothing leaves your device.</p> </div> <div class="fx-card"> <h3>Coverage that grows</h3> <p>Covers YouTube, Netflix, Disney+, Prime Video, and Spotify with new sites and capabilities being added with the support of user feedback and donations.</p> </div> </div> </section> <h2 id="support-adhush" data-reveal style="margin-bottom:2px">Support AdHush</h2> <p class="lead" data-reveal style="margin:0 auto; text-align:center;">The extension is free. If it helps you, chip in any amount to keep development going.</p> <div data-stagger style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center" id="support-cta"> <a class="btn secondary" id="stripe-btn" href="https://donate.stripe.com/14AcN7aeGaYg3rcd271B600">Support via Stripe</a> </div> <p class="lead" style="margin-top:10px;color:#cfd6e6" data-reveal>Stripe securely processes donations; taxes and disputes are handled via Stripe.</p> </div> </div> </section> <section id="changelog" class="section" data-ambient="hue-rotate(270deg) saturate(1.2) brightness(1.02)"> <div class="container clip" id="changelog-clip"> <h2 data-reveal>Changelog & Roadmap</h2> <div class="changelog-grid" data-stagger> <div class="fx-card"> <div class="lead" style="font-size:12px;color:#9aa6c0">Aug 2025</div> <h3>v2.6.2</h3> <ul class="lead" style="color:#a6afc3"> <li>Overlay wording tweaks (Now / Muted / Mode).</li> <li>Better ad‑end handling. </li> <li>Bug fixes for Netflix ad‑end loop edge case.</li> </ul> </div> <div class="fx-card"> <h3>Up next</h3> <ul class="lead" style="color:#a6afc3"> <li>Support for more websites.</li> <li>User activated general ad detection for unsupported sites.</li> <li>Expanded site‑specific detectors (config UI).</li> </ul> </div> </div> </div> </section> </main> <footer class="footer" id="help"> <div class="container"> <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px"> <div><b>AdHush</b><div class="lead" style="color:#a6afc3">Silence loud ads. Keep your flow.</div></div> <div><b>Legal</b><div><a href="#privacy">Privacy</a> <a href="terms.html">Terms</a></div></div> <div><b>Contact</b><div class="lead" style="color:#a6afc3">adhushsuppport@gmail.com</div></div> </div> </div> </footer> <script>
     // Ambient & transitions
     (function(){
       const ambient=document.querySelector('.ambient');
@@ -576,252 +533,6 @@ section + .section::before{ content:none !important; background:none !important;
       window.addEventListener('resize', ()=>{ if(window.innerWidth>880 && menu.classList.contains('open')) close(); });
     })();
   </script> 
-<section id="tos-view" role="document" aria-label="Terms & Conditions">
-  <div id="tos-wrap">
-    <div id="tos-card">
-      <span id="tos-eyebrow">Legal</span>
-      <h1>Terms &amp; Conditions</h1>
-      <div id="tos-meta"><span>Effective date: August 16, 2025</span><span>Payment processor: Stripe</span></div>
-
-      <h2>1. What this is</h2>
-      <p>AdHush (“we”, “us”) provides a website and a browser extension (the “Product”). By accessing or using the Product, you agree to these Terms.</p>
-
-      <h2>2. Using AdHush</h2>
-      <ul>
-        <li>Use the Product lawfully. <strong>Personal use only</strong>; contact us for other uses.</li>
-        <li>You are responsible for ensuring your use of the Product complies with the terms of service and policies of any site where you use it.</li>
-        <li>Don’t break, bypass, reverse engineer, or resell the Product.</li>
-      </ul>
-
-      <h2>3. Donations</h2>
-      <ul>
-        <li>Support donations are optional and don’t unlock features.</li>
-        <li>Donations are processed by <strong>Stripe</strong>. Taxes may apply at checkout.</li>
-        <li>Refunds: good-faith refunds within 30 days—email us first.</li>
-      </ul>
-
-      <h2>4. Privacy</h2>
-      <p>We aim to keep everything local on your device. Stripe’s processing follows its own policies.</p>
-
-      <h2>5. Intellectual property</h2>
-      <p>We and our licensors own the Product. You receive a personal, revocable license to use them—no ownership is transferred.</p>
-
-      <h2>6. “As-is”</h2>
-      <p>The Product are provided “as is” and “as available,” without warranties. Features may change or break.</p>
-
-      <h2>7. Liability limit</h2><p>TO THE MAXIMUM EXTENT PERMITTED BY LAW, WE DISCLAIM ALL LIABILITY FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, EXEMPLARY, OR PUNITIVE DAMAGES, OR ANY LOSS OF DATA, PROFITS, OR REVENUE, ARISING OUT OF OR RELATED TO YOUR USE OF THE PRODUCT. WHERE LIABILITY CANNOT BE FULLY EXCLUDED, OUR TOTAL AGGREGATE LIABILITY FOR ALL CLAIMS IS LIMITED TO THE LESSER OF <strong>$1</strong> OR THE AMOUNT YOU <strong>DONATED</strong> FOR THE PRODUCT IN THE 30 DAYS PRECEDING THE CLAIM.</p>
-
-      <h2>8. Changes & termination</h2>
-      <p>We may update the Product or these Terms. If you continue using AdHush after updates, you accept the changes. We may suspend access for misuse.</p>
-
-      <h2>9. Law & contact</h2>
-      <p>These Terms follow the laws of Maine, USA. Questions? Email <a href="mailto:adhushsuppport@gmail.com">adhushsuppport@gmail.com</a>.</p>
-
-      <p style="margin-top:16px"><a id="tos-back" href="/">← Back to home</a></p>
-    </div>
-  </div>
-</section>
-
-
-<script id="tos-router">
-(function () {
-  var IS_FILE = location.protocol === 'file:';
-
-  function trimSlash(p){ return (p||'').replace(/\/+$/,''); }
-  function pathFrom(href){
-    try { return trimSlash(new URL(href, location.href).pathname); } catch(e){ return trimSlash(href); }
-  }
-  function getHash(href){
-    try { return new URL(href, location.href).hash || ''; } catch(e){ return (href && href[0]==='#') ? href : ''; }
-  }
-  function isTerms(){
-    if(IS_FILE){
-      var h = (location.hash||'').toLowerCase();
-      return h === '#terms' || h === '#terms';
-    }
-    var p = trimSlash(location.pathname);
-    return p === '/terms' || p === '/privacy';
-  }
-  function setMode(terms){
-    document.documentElement.classList.toggle('terms-mode', !!terms);
-    if(terms){ document.title = 'Terms of Service — AdHush'; }
-  }
-  function scrollTop(){ try{ window.scrollTo({ top: 0, behavior: 'auto' }); }catch(e){ window.scrollTo(0,0); } }
-  function scrollToId(id){
-    var targetId = id;
-    if(id === 'support'){ if(document.getElementById('support-adhush')) targetId = 'support-adhush'; }
-    var el = document.getElementById(targetId);
-    if(!el) return;
-    var offset = 0;
-    if(targetId === 'features' || targetId === 'mission') offset = 128;
-    else if(targetId === 'support' || targetId === 'support-adhush') offset = 160;
-    var y = (window.pageYOffset || document.documentElement.scrollTop || 0) + el.getBoundingClientRect().top - offset;
-    try{ window.scrollTo({top: y, behavior: 'smooth'}); }catch(e){ window.scrollTo(0, y); }
-  }
-  function gotoTerms(){
-    setMode(true);
-    if(IS_FILE){
-      if(location.hash !== '#terms') location.hash = '#terms';
-    } else {
-      history.pushState({}, '', '/terms');
-    }
-    scrollTop();
-  }
-  function gotoHome(){
-    setMode(false);
-    if(IS_FILE){
-      if(location.hash) history.pushState({}, '', location.pathname);
-    } else {
-      history.pushState({}, '', '/');
-    }
-    scrollTop();
-  }
-  function gotoSection(hash){
-    var id = (hash||'').replace(/^#/,'');
-    setMode(false);
-    if(IS_FILE){
-      if(location.hash !== '#'+id) history.pushState({}, '', location.pathname + '#' + id);
-    } else {
-      history.pushState({}, '', '/#' + id);
-    }
-    setTimeout(function(){ scrollToId(id); }, 0);
-  }
-
-  // Initial load
-  setMode(isTerms());
-  if (isTerms()) { scrollTop(); }
-  else if (location.hash && location.hash !== '#') {
-    gotoSection(location.hash);
-  }
-
-  // Normalize Terms/Privacy links at runtime
-  document.querySelectorAll('a[href]').forEach(function(a){
-    var href = (a.getAttribute('href')||'').toLowerCase();
-    var txt = (a.textContent||'').toLowerCase();
-    var legal = /terms|privacy/.test(txt) || /#terms|#privacy|\/terms|\/privacy/.test(href);
-    if(legal){
-      a.setAttribute('href', IS_FILE ? '#terms' : '/terms');
-      a.setAttribute('data-legal', 'true');
-      a.setAttribute('target', '_self');
-    }
-  });
-
-  // Intercept navigation
-  document.addEventListener('click', function(e){
-    var a = e.target.closest && e.target.closest('a[href]');
-    if(!a) return;
-
-    var rawHref = a.getAttribute('href') || '';
-    var href = rawHref.toLowerCase();
-    var hash = getHash(rawHref);
-    var label = (a.textContent || '').trim().toLowerCase();
-    var isLegalLabel = / terms | privacy /.test(label) || a.getAttribute('data-legal') === 'true';
-    // If a header/nav link is clicked (non-legal), force in-page navigation (auto-closes Terms)
-    var inHeader = !!(a.closest && (a.closest('header') || a.closest('nav')));
-    if(inHeader && !isLegalLabel){
-      var hh = getHash(rawHref);
-      if(hh){
-        e.preventDefault();
-        gotoSection(hh);
-        return;
-      }
-    }
-
-    // Handle Terms/Privacy first (even with cmd/ctrl/middle)
-    if(isLegalLabel){
-      e.preventDefault();
-      gotoTerms();
-      return;
-    }
-
-    // For everything else, honor modified-click/new-tab
-    if(e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || a.target === '_blank') return;
-
-    if(IS_FILE){
-      if(href === '/' || href === '#home'){ e.preventDefault(); gotoHome(); return; }
-      if(hash){ e.preventDefault(); gotoSection(hash); return; }
-      return;
-    } else {
-      var url; try { url = new URL(rawHref, location.href); } catch(e){ return; }
-      if(url.origin !== location.origin) return;
-      var path = trimSlash(url.pathname);
-      if(path === '/terms' || path === '/privacy' || /\/terms(?:-and-conditions)?$/.test(path)){
-        e.preventDefault(); gotoTerms(); return;
-      }
-      if(path === '' || path === '/'){
-        if(url.hash){ e.preventDefault(); gotoSection(url.hash); return; }
-        e.preventDefault(); gotoHome(); return;
-      }
-    }
-  }, true);
-
-  // Handle back/forward
-  window.addEventListener('popstate', function(){
-    var terms = isTerms();
-    setMode(terms);
-    if (terms) scrollTop();
-    else if (location.hash && location.hash !== '#') scrollToId(location.hash.slice(1));
-  });
-
-  // Also respond to hash changes in file mode
-  if(IS_FILE){
-    window.addEventListener('hashchange', function(){
-      var terms = isTerms();
-      setMode(terms);
-      if (terms) scrollTop();
-      else if (location.hash && location.hash !== '#') scrollToId(location.hash.slice(1));
-    });
-  }
-})();
-</script>
-
-
-<script id="hide-privacy-terms-cards">
-(function(){
-  // Only affect the home view; keep Terms view intact
-  if (document.documentElement.classList.contains('terms-mode')) return;
-
-  // Look inside the footer for card-like boxes titled "Privacy" or "Terms"
-  var footer = document.querySelector('footer');
-  if(!footer) return;
-
-  var blocks = footer.querySelectorAll('section, article, div');
-  blocks.forEach(function(el){
-    // find a heading-like node inside
-    var h = el.querySelector('h1,h2,h3,.h1,.h2,.h3,strong,b');
-    if(!h) return;
-    var t = (h.textContent||'').trim().toLowerCase();
-    if(t === 'privacy' || t === 'terms'){
-      el.style.display = 'none';
-    }
-  });
-})();
-</script>
-
-
-<script id="clip-initial-activate">
-// Ensure gradient "clip" boxes are correctly positioned on initial load
-(function(){
-  function activateVisibleClips(){
-    var els = document.querySelectorAll('.clip');
-    for (var i=0; i<els.length; i++){
-      var el = els[i];
-      var r = el.getBoundingClientRect();
-      if (r.top < window.innerHeight && r.bottom > 0){
-        el.classList.add('active');
-      }
-    }
-  }
-  if (document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', activateVisibleClips);
-  } else {
-    activateVisibleClips();
-  }
-  window.addEventListener('load', activateVisibleClips, { once: true });
-})();
-</script>
-
-
 <style>
   #tos-modal[hidden]{ display:none; }
   #tos-modal{ position:fixed; inset:0; z-index:9999; }
@@ -837,20 +548,7 @@ section + .section::before{ content:none !important; background:none !important;
   #tos-modal .actions{ display:flex; justify-content:flex-end; gap:.6rem; }
   #tos-modal .btn[disabled]{ opacity:.5; pointer-events:none; }
   /* Respect existing .btn styles; only minor tweaks here if needed */
-</style>
-<div id="tos-modal" hidden aria-modal="true" role="dialog" aria-labelledby="tos-title">
-  <div class="tos-backdrop" data-close></div>
-  <div class="tos-dialog">
-    <h3 id="tos-title">Agree to Terms</h3>
-    <p>To download AdHush, you must agree to the <a href="/terms">Terms of Service</a>.</p>
-    <label class="tos-row"><input type="checkbox" id="tos-check"> <span>I have read and agree to the Terms of Service.</span></label>
-    <div class="actions">
-      <button class="btn secondary" id="tos-cancel" type="button">Cancel</button>
-      <button class="btn" id="tos-accept" type="button" disabled>Agree &amp; Download</button>
-    </div>
-  </div>
-</div>
-<script>
+</style> <div id="tos-modal" hidden aria-modal="true" role="dialog" aria-labelledby="tos-title"> <div class="tos-backdrop" data-close></div> <div class="tos-dialog"> <h3 id="tos-title">Agree to Terms</h3> <p>To download AdHush, you must agree to the <a href="terms.html">Terms of Service</a>.</p> <label class="tos-row"><input type="checkbox" id="tos-check"> <span>I have read and agree to the Terms of Service.</span></label> <div class="actions"> <button class="btn secondary" id="tos-cancel" type="button">Cancel</button> <button class="btn" id="tos-accept" type="button" disabled>Agree &amp; Download</button> </div> </div> </div> <script>
   (function(){
     const MODAL = document.getElementById('tos-modal');
     const CHECK = document.getElementById('tos-check');
@@ -861,31 +559,11 @@ section + .section::before{ content:none !important; background:none !important;
     
     // Ensure clicking Terms link inside the modal closes it and navigates to Terms section
     (function(){
-      const link = MODAL.querySelector('a[href="#terms"], a[href="/terms"]');
+      const link = MODAL.querySelector('a[href="#terms"], a[href="terms.html"]');
       if (!link) return;
       link.addEventListener('click', function(e){
         e.preventDefault();
-        close();
-        // Prefer triggering the app's own navigation handler
-        const navTerms = document.querySelector('a[href="/terms"], a[href="#terms"]');
-        if (navTerms){
-          try {
-            navTerms.dispatchEvent(new MouseEvent('click', { bubbles:true, cancelable:true }));
-            return;
-          } catch(_){}
-        }
-        // Fallback: update URL to terms route/hash and notify listeners
-        try {
-          if (location.protocol === 'file:'){
-            if (location.hash !== '#terms') location.hash = '#terms';
-          } else {
-            history.pushState({}, '', '/terms');
-            window.dispatchEvent(new PopStateEvent('popstate'));
-          }
-        } catch(_){
-          // Last resort: hard navigate
-          location.href = (location.protocol === 'file:') ? '#terms' : '/terms';
-        }
+        window.location.href = 'terms.html';
       });
     })();
 function open(url){
@@ -938,7 +616,4 @@ function open(url){
       attach();
     }
   })();
-</script>
-
-</body>
-</html>
+</script> </body> </html>
