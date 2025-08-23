@@ -547,7 +547,7 @@ h1[data-reveal] .gradient-text{ padding-bottom:4px; box-decoration-break:clone; 
   #tos-modal .actions{ display:flex; justify-content:flex-end; gap:.6rem; }
   #tos-modal .btn[disabled]{ opacity:.5; pointer-events:none; }
   /* Respect existing .btn styles; only minor tweaks here if needed */
-</style> <div id="tos-modal" hidden aria-modal="true" role="dialog" aria-labelledby="tos-title"> <div class="tos-backdrop" data-close></div> <div class="tos-dialog"> <h3 id="tos-title">Agree to Terms</h3> <p>To download AdHush, you must agree to the <a href="terms.html">Terms of Service</a>.</p> <label class="tos-row"><input type="checkbox" id="tos-check"> <span>I have read and agree to the Terms of Service.</span></label> <div class="actions"> <button class="btn secondary" id="tos-cancel" type="button">Cancel</button> <button class="btn" id="tos-accept" type="button" disabled>Agree &amp; Download</button> </div> </div> </div> <script>
+</style> <div id="tos-modal" hidden aria-modal="true" role="dialog" aria-labelledby="tos-title"> <div class="tos-backdrop" data-close></div> <div class="tos-dialog"> <h3 id="tos-title">Agree to Terms</h3> <p>To download AdHush, you must agree to the <a href="terms.html" target="_blank">Terms of Service</a>.</p> <label class="tos-row"><input type="checkbox" id="tos-check"> <span>I have read and agree to the <a href="terms.html" target="_blank">Terms of Service</a>.</span></label> <div class="actions"> <button class="btn secondary" id="tos-cancel" type="button">Cancel</button> <button class="btn" id="tos-accept" type="button" disabled>Agree &amp; Download</button> </div> </div> </div> <script>
   (function(){
     const MODAL = document.getElementById('tos-modal');
     const CHECK = document.getElementById('tos-check');
@@ -555,17 +555,7 @@ h1[data-reveal] .gradient-text{ padding-bottom:4px; box-decoration-break:clone; 
     const CANCEL = document.getElementById('tos-cancel');
     let pendingUrl = null;
 
-    
-    // Ensure clicking Terms link inside the modal closes it and navigates to Terms section
-    (function(){
-      const link = MODAL.querySelector('a[href="terms.html"]');
-      if (!link) return;
-      link.addEventListener('click', function(e){
-        e.preventDefault();
-        window.location.href = 'terms.html';
-      });
-    })();
-function open(url){
+    function open(url){
       pendingUrl = url;
       CHECK.checked = false;
       ACCEPT.setAttribute('disabled','');
